@@ -28,8 +28,17 @@ namespace Test_growcreate.Controllers
             StreamReader reader = new StreamReader(response.GetResponseStream());
             string json = reader.ReadToEnd();
             JObject o = JObject.Parse(json);
-            ViewBag.Lat=(string)o["results"][0]["geometry"]["location"]["lat"];
-            ViewBag.Lng=(string)o["results"][0]["geometry"]["location"]["lng"];
+            try
+            {
+                ViewBag.Lat = (string)o["results"][0]["geometry"]["location"]["lat"];
+                ViewBag.Lng = (string)o["results"][0]["geometry"]["location"]["lng"];
+            }
+            catch (Exception)
+            {
+                ViewBag.Error = "Place not found";
+                ViewBag.Lat = "0";
+                ViewBag.Lng = "0";
+            }
             
             return View();
         }
